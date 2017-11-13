@@ -6,7 +6,7 @@ import java.io.PrintWriter;
  */
 public class Algorithm {
 
-    public static void run(String algorithm, String cutoff, String output_file) throws IOException{
+    public static void run(Graph G, String algorithm, String cutoff, String output_file) throws IOException{
         if(algorithm.equals("BnB")){
             //call branch and bound
             bnb();
@@ -24,6 +24,7 @@ public class Algorithm {
         }
 
         PrintWriter output = new PrintWriter(output_file,"UTF-8");
+        //to be implemented
 
     }
 
