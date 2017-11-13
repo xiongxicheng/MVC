@@ -6,11 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Graph {
-    List<Vertex> V;
+    Vertex[] V;
     public Graph(int num){
-        V = new LinkedList<>();
+        V = new Vertex[num];
         for(int i=0;i<num;i++){
-            V.add(new Vertex());
+            V[i] = new Vertex();
         }
     }
 }

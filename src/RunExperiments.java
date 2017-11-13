@@ -32,7 +32,12 @@ public class RunExperiments {
         int num_edges = Integer.parseInt(split[1]);
         Graph G = new Graph(num_vertices);
         //to be implemented
-
+        while ((line = br.readLine()) != null){
+            split = line.split(" ");
+            for(int i=0;i<split.length;i++){
+                G.V[i].adjacencyList.add(Integer.parseInt(split[i]));
+            }
+        }
 
         return G;
     }
