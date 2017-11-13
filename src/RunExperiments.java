@@ -8,19 +8,23 @@ import java.io.IOException;
 
 public class RunExperiments {
     public static void main(String[] args)throws IOException{
-        if (args.length < 4) {
-            System.err.println("Unexpected number of command line arguments");
-            System.exit(1);
-        }
-        String input_file = args[0];
-        String algorithm = args[1];
-        String cutoff = args[2]; // in seconds
-        String seed = args[3];
-        String output_file = input_file + "_" + algorithm + "_" + cutoff + "_" + seed +".sol";
+//        if (args.length < 4) {
+//            System.err.println("Unexpected number of command line arguments");
+//            System.exit(1);
+//        }
+//        String input_file = args[0];
+//        String algorithm = args[1];
+//        String cutoff = args[2]; // in seconds
+//        String seed = args[3];
+//        String output_file = input_file + "_" + algorithm + "_" + cutoff + "_" + seed +".sol";
+//
+//        Graph G = parse(input_file);
+        Graph G = parse("karate.graph");
+        String cutoff = "600";
 
-        Graph G = parse(input_file);
-
-        Algorithm.run(G,algorithm,cutoff,output_file);
+        //Algorithm.run(G,algorithm,cutoff,output_file);
+        Algorithm algorithm = new Algorithm(Integer.parseInt(cutoff));
+        algorithm.run(G,"BnB","testout.txt");
 
     }
 
