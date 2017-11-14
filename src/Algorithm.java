@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
@@ -8,14 +9,17 @@ import java.util.Timer;
  */
 public class Algorithm {
     Timer timer;
+    PrintWriter output;
+    int opt;
     public void run(Graph G, String algorithm, String output_file) throws IOException{
 
-        PrintWriter output = new PrintWriter(output_file,"UTF-8");
+        opt = G.V.length;
+        output = new PrintWriter(output_file,"UTF-8");
 
         if(algorithm.equals("BnB")){
-            //call branch and bound
-            int count = bnb(G,output);
-            System.out.println(count);
+            //branch and bound
+            bnb(G,0,G.num_edges,0,G.V.length);
+            System.out.println(opt);
 
         }else if (algorithm.equals("Approx")){
             //call approximation algorithm
@@ -30,20 +34,32 @@ public class Algorithm {
         }
 
     }
-
-    public int bnb(Graph G, PrintWriter output){
-        int count = 0;
-        for(int i=0;i<G.V.length;i++){
-            Integer u = new Integer(i);
-            List<Integer> adjList = G.V[i].adjacencyList;
-            if(adjList.size()>0) count++;
-            while(adjList.size()>0){
-                Integer n = adjList.get(0);
-                G.V[n-1].adjacencyList.remove(u);
-                adjList.remove(0);
+    public void bnb(Graph G, int i, int uncovered, int count, int lb){
+        if(uncovered==0){
+            //output.println(count);
+            if(count<opt){
+                opt = count;
+                System.out.println(opt);
             }
         }
-        return count;
+        if(i>=G.V.length) return;
+        if(count>opt) return;
+        int count1=count;
+        Graph g = new Graph(G.V.length,G.num_edges);
+        for(int k=0;k<g.V.length;k++){
+            g.V[k].adjacencyList = new ArrayList<>(G.V[k].adjacencyList);
+        }
+        Integer u = new Integer(i+1);
+        List<Integer> adjList = g.V[i].adjacencyList;
+        if(adjList.size()>0) count1++;
+        while(adjList.size()>0){
+            Integer n = adjList.get(0);
+            g.V[n-1].adjacencyList.remove(u);
+            adjList.remove(0);
+            g.num_edges--;
+        }
+        bnb(g,i+1,g.num_edges,count1,i);
+        bnb(G,i+1,uncovered,count,lb);//not include vertex i
     }
 
     public void approx(){

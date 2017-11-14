@@ -23,9 +23,9 @@ public class RunExperiments {
         String cutoff = "600";
 
         //Algorithm.run(G,algorithm,cutoff,output_file);
-        Algorithm algorithm = new Algorithm(Integer.parseInt(cutoff));
+        Algorithm algorithm = new Algorithm(600);
         algorithm.run(G,"BnB","testout.txt");
-
+        System.exit(0);
     }
 
     public static Graph parse(String file) throws IOException{
@@ -34,13 +34,15 @@ public class RunExperiments {
         String[] split = line.split(" ");
         int num_vertices = Integer.parseInt(split[0]);
         int num_edges = Integer.parseInt(split[1]);
-        Graph G = new Graph(num_vertices);
+        Graph G = new Graph(num_vertices,num_edges);
         //to be implemented
+        int j=0;
         while ((line = br.readLine()) != null) {
             split = line.split(" ");
             for (int i = 0; i < split.length; i++) {
-                G.V[i].adjacencyList.add(Integer.parseInt(split[i]));
+                G.V[j].adjacencyList.add(Integer.parseInt(split[i]));
             }
+            j++;
         }
         return G;
     }
