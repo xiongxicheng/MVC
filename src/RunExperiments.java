@@ -5,6 +5,10 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+
+
 
 public class RunExperiments {
     public static void main(String[] args)throws IOException{
@@ -19,7 +23,7 @@ public class RunExperiments {
 //        String output_file = input_file + "_" + algorithm + "_" + cutoff + "_" + seed +".sol";
 //
 //        Graph G = parse(input_file);
-        Graph G = parse("karate.graph");
+        Graph G = parse("jazz.graph");
         String cutoff = "600";
 
         //Algorithm.run(G,algorithm,cutoff,output_file);
