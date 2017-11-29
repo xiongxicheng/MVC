@@ -23,7 +23,7 @@ public class RunExperiments {
 //        String output_file = input_file + "_" + algorithm + "_" + cutoff + "_" + seed +".sol";
 //
 //        Graph G = parse(input_file);
-        Graph G = parse("karate.graph");
+        Graph G = parse("jazz.graph");
         String cutoff = "600";
 
         //Algorithm.run(G,algorithm,cutoff,output_file);
