@@ -23,7 +23,7 @@ public class RunExperiments {
 //        String output_file = input_file + "_" + algorithm + "_" + cutoff + "_" + seed +".sol";
 //
 //        Graph G = parse(input_file);
-        Graph G = parse("jazz.graph");
+        Graph G = parse("karate.graph");
         String cutoff = "600";
 
         //Algorithm.run(G,algorithm,cutoff,output_file);
@@ -42,9 +42,11 @@ public class RunExperiments {
         //to be implemented
         int j=0;
         while ((line = br.readLine()) != null) {
-            split = line.split(" ");
-            for (int i = 0; i < split.length; i++) {
-                G.V[j].adjacencyList.add(Integer.parseInt(split[i]));
+            if(!line.equals("")) {
+                split = line.split(" ");
+                for (int i = 0; i < split.length; i++) {
+                    G.V[j].adjacencyList.add(Integer.parseInt(split[i]));
+                }
             }
             j++;
         }

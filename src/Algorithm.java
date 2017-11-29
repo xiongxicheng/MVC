@@ -12,6 +12,7 @@ public class Algorithm {
     PrintWriter output;
     int opt;
     long startTime;
+    ArrayList<Integer> res;
     public void run(Graph G, String algorithm, String output_file) throws IOException{
 
         opt = G.V.length;
@@ -20,11 +21,12 @@ public class Algorithm {
         if(algorithm.equals("BnB")){
             //branch and bound
             startTime = System.nanoTime();
-            bnb(G,0,G.num_edges,0,G.V.length);
+            res = new ArrayList<>();
+            bnb(res, G,0);
 
         }else if (algorithm.equals("Approx")){
             //call approximation algorithm
-            approx();
+
 
         }else if(algorithm.equals("LS1")){
             //call local search 1
@@ -35,53 +37,92 @@ public class Algorithm {
         }
 
     }
-    public void bnb(Graph G, int k, int uncovered, int count, int lb){
-        if(uncovered==0){
-            //output.println(count);
-            if(count<opt){
-                opt = count;
+    public void bnb(ArrayList<Integer> res, Graph G, int index){
+//        if(count<opt&uncovered==0){
+//            //output.println(count);
+//            opt = count;
+//            long currentTime = System.nanoTime();
+//            System.out.println((double) (currentTime-startTime)/1000000000+","+opt);
+//        }
+//        if(k>=G.V.length) return;
+//        if(count>opt)
+
+        //calculate currently coverred
+        //System.out.println(index);
+        if(opt<res.size()) return;
+        int coverred = 0;
+        for(Integer u:res){
+            for(Integer v:G.V[u-1].adjacencyList){
+                if(res.contains(v)){
+                    coverred++;
+                }else{
+                    coverred +=2;
+                }
+            }
+        }
+        coverred /=2;
+        //System.out.println(coverred);
+        if(coverred==G.num_edges){
+            if(opt>res.size()){
+                opt = res.size();
                 long currentTime = System.nanoTime();
                 System.out.println((double) (currentTime-startTime)/1000000000+","+opt);
             }
+        }else{
+            //calculate max can be coverred
+            int max = 0;
+            for(int i=index;i<G.V.length;i++){
+                for(Integer v:G.V[i].adjacencyList){
+                    if(v>index){
+                        max++;
+                    }else if(res.contains(v)){
+                        continue;
+                    }else {
+                        max +=2;
+                    }
+                }
+            }
+            max /=2;
+            //System.out.println(max);
+            if(max<G.num_edges-coverred) return;
         }
-        if(k>=G.V.length) return;
-        if(count>opt) return;
-//        int count1=count;
-//        Graph g = new Graph(G.V.length,G.num_edges);
-//        for(int k=0;k<g.V.length;k++){
-//            g.V[k].adjacencyList = new ArrayList<>(G.V[k].adjacencyList);
-//        }
-//        Integer u = new Integer(i+1);
-//        List<Integer> adjList = g.V[i].adjacencyList;
-//        if(adjList.size()>0) count1++;
-//        while(adjList.size()>0){
-//            Integer n = adjList.get(0);
-//            g.V[n-1].adjacencyList.remove(u);
-//            adjList.remove(0);
-//            g.num_edges--;
-//        }
-//        bnb(G,i+1,uncovered,count1,lb);//not include vertex i
-//        bnb(g,i+1,g.num_edges,count,i);
-        for(int i=k;i<G.V.length;i++){
+        for(int i=index;i<G.V.length;i++){
             Integer u = new Integer(i+1);
-            List<Integer> adjList = G.V[i].adjacencyList;
-            if(adjList.size()>0) count++;
-            for(Integer n:adjList){
-                G.V[n-1].adjacencyList.remove(u);
-                G.num_edges--;
-            }
-            bnb(G,i+1,G.num_edges,count,i);
-            if(adjList.size()>0) count--;
-            for(Integer n:adjList){
-                G.V[n-1].adjacencyList.add(u);
-                G.num_edges++;
-            }
+            res.add(u);
+            bnb(res, G,i+1);
+            res.remove(res.size()-1);
         }
     }
 
-    public void approx(){
+    public int approx(ArrayList<ArrayList<Integer>> adjList, int num_edges, int num_vertices){
 
+        int coversize = 0;
+        int edgesUncovered = num_edges;
+        while(edgesUncovered>0) {
+            int maxDegree = 0;
+            int vertexNum = 0;
+            for(int i=0;i<num_vertices;i++) {
+                int de = adjList.get(i).size();
+                if(de>maxDegree) {
+                    vertexNum = i+1;
+                    maxDegree = de;
+                }
+            }
+            coversize++;
+            edgesUncovered = edgesUncovered - maxDegree;
+            //result.add(Integer.toString(vertexNum));
+            ArrayList<Integer> incidentEdges = adjList.get(vertexNum-1);
+            for(int i=0;i<incidentEdges.size();i++) {
+                int neightbour = incidentEdges.get(i);
+                adjList.get(neightbour-1).remove(new Integer(vertexNum));
+            }
+            incidentEdges.clear();
+            adjList.get(vertexNum-1).clear();
+        }
+        return coversize;
     }
+
+
 
     public void ls(){
         
