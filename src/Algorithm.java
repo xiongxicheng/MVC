@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 
@@ -12,7 +13,7 @@ public class Algorithm {
     PrintWriter output;
     int opt;
     long startTime;
-    ArrayList<Integer> res;
+    ArrayList<Integer> result = new ArrayList<>();
     public void run(Graph G, String algorithm, String output_file) throws IOException{
 
         opt = G.V.length;
@@ -21,9 +22,12 @@ public class Algorithm {
         if(algorithm.equals("BnB")){
             //branch and bound
             startTime = System.nanoTime();
-            res = new ArrayList<>();
-            bnb(res, G,0);
-
+            ArrayList<Integer> res = new ArrayList<>();
+            bnb(res, G,0, G.num_edges);
+            System.out.println(result.size());
+            for(int i:result){
+                System.out.print(i+" ");
+            }
         }else if (algorithm.equals("Approx")){
             //call approximation algorithm
 
@@ -37,60 +41,51 @@ public class Algorithm {
         }
 
     }
-    public void bnb(ArrayList<Integer> res, Graph G, int index){
-//        if(count<opt&uncovered==0){
-//            //output.println(count);
-//            opt = count;
-//            long currentTime = System.nanoTime();
-//            System.out.println((double) (currentTime-startTime)/1000000000+","+opt);
-//        }
-//        if(k>=G.V.length) return;
-//        if(count>opt)
+    public void bnb(ArrayList<Integer> res, Graph G, int index, int uncovered){
 
         //calculate currently coverred
         //System.out.println(index);
         if(opt<res.size()) return;
-        int coverred = 0;
-        for(Integer u:res){
-            for(Integer v:G.V[u-1].adjacencyList){
-                if(res.contains(v)){
-                    coverred++;
-                }else{
-                    coverred +=2;
-                }
-            }
-        }
-        coverred /=2;
-        //System.out.println(coverred);
-        if(coverred==G.num_edges){
+        //System.out.println(uncovered);
+        if(uncovered==0){
             if(opt>res.size()){
                 opt = res.size();
                 long currentTime = System.nanoTime();
                 System.out.println((double) (currentTime-startTime)/1000000000+","+opt);
+                result = new ArrayList<>(res);
             }
         }else{
-            //calculate max can be coverred
+            //calculate max can be coverred by remaining
             int max = 0;
             for(int i=index;i<G.V.length;i++){
                 for(Integer v:G.V[i].adjacencyList){
                     if(v>index){
                         max++;
-                    }else if(res.contains(v)){
-                        continue;
-                    }else {
+                    }else if(!res.contains(v)){
                         max +=2;
                     }
                 }
             }
             max /=2;
             //System.out.println(max);
-            if(max<G.num_edges-coverred) return;
+            if(max<uncovered) return;
         }
         for(int i=index;i<G.V.length;i++){
             Integer u = new Integer(i+1);
             res.add(u);
-            bnb(res, G,i+1);
+            List<Integer> temp = new LinkedList<>(G.V[u-1].adjacencyList);
+            G.V[u-1].adjacencyList = new LinkedList<>();
+            for(Integer v:temp){
+                G.V[v-1].adjacencyList.remove(u);
+                G.num_edges--;
+            }
+            bnb(res, G,i+1,G.num_edges);
             res.remove(res.size()-1);
+            for(Integer v:temp){
+                G.V[u-1].adjacencyList = temp;
+                G.V[v-1].adjacencyList.add(u);
+                G.num_edges++;
+            }
         }
     }
 
