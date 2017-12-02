@@ -10,15 +10,14 @@ import java.util.Timer;
  */
 public class Algorithm {
     Timer timer;
-    PrintWriter output;
+    static PrintWriter output;
     int opt;
     long startTime;
-    ArrayList<Integer> result = new ArrayList<>();
-    public void run(Graph G, String algorithm, String output_file) throws IOException{
+    static ArrayList<Integer> result = new ArrayList<>();
+    public void run(Graph G, String algorithm, PrintWriter output) throws IOException{
 
         opt = G.V.length;
-        output = new PrintWriter(output_file,"UTF-8");
-
+        this.output = output;
         if(algorithm.equals("BnB")){
             //branch and bound
             startTime = System.nanoTime();
@@ -45,46 +44,47 @@ public class Algorithm {
 
         //calculate currently coverred
         //System.out.println(index);
-        if(opt<res.size()) return;
+        if(opt<=res.size()) return;
         //System.out.println(uncovered);
-        if(uncovered==0){
-            if(opt>res.size()){
-                opt = res.size();
-                long currentTime = System.nanoTime();
-                System.out.println((double) (currentTime-startTime)/1000000000+","+opt);
-                result = new ArrayList<>(res);
-            }
-        }else{
-            //calculate max can be coverred by remaining
-            int max = 0;
-            for(int i=index;i<G.V.length;i++){
-                for(Integer v:G.V[i].adjacencyList){
-                    if(v>index){
-                        max++;
-                    }else if(!res.contains(v)){
-                        max +=2;
-                    }
+        if(uncovered==0&&opt>res.size()){
+            opt = res.size();
+            long currentTime = System.nanoTime();
+            System.out.println((double) (currentTime-startTime)/1000000000+","+opt);
+            //output.println((double) (currentTime-startTime)/1000000000+","+opt);
+            result = new ArrayList<>(res);
+            return;
+        }
+        //calculate max can be coverred by remaining vertices
+        int max = 0;
+        for(int i=index;i<G.V.length;i++){
+            for(Integer v:G.V[i].adjacencyList){
+                if(v>index){
+                    max++;
+                }else if(!res.contains(v)){
+                    max +=2;
                 }
             }
-            max /=2;
-            //System.out.println(max);
-            if(max<uncovered) return;
         }
-        for(int i=index;i<G.V.length;i++){
-            Integer u = new Integer(i+1);
-            res.add(u);
-            List<Integer> temp = new LinkedList<>(G.V[u-1].adjacencyList);
-            G.V[u-1].adjacencyList = new LinkedList<>();
-            for(Integer v:temp){
-                G.V[v-1].adjacencyList.remove(u);
-                G.num_edges--;
-            }
-            bnb(res, G,i+1,G.num_edges);
-            res.remove(res.size()-1);
-            for(Integer v:temp){
-                G.V[u-1].adjacencyList = temp;
-                G.V[v-1].adjacencyList.add(u);
-                G.num_edges++;
+        max /=2;
+        //System.out.println(max);
+        if(max<uncovered) return;
+        if(res.size()<opt-1){
+            for(int i=index;i<G.V.length;i++){
+                Integer u = new Integer(i+1);
+                res.add(u);
+                List<Integer> temp = new LinkedList<>(G.V[u-1].adjacencyList);
+                G.V[u-1].adjacencyList = new LinkedList<>();
+                for(Integer v:temp){
+                    G.V[v-1].adjacencyList.remove(u);
+                    G.num_edges--;
+                }
+                bnb(res, G,i+1,G.num_edges);
+                res.remove(res.size()-1);
+                for(Integer v:temp){
+                    G.V[u-1].adjacencyList = temp;
+                    G.V[v-1].adjacencyList.add(u);
+                    G.num_edges++;
+                }
             }
         }
     }

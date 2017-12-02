@@ -7,6 +7,11 @@ import java.util.TimerTask;
 public class finishTask extends TimerTask {
     public void run(){
         System.out.println("Time's up");
+        Algorithm.output.close();
+        System.out.println(Algorithm.result.size());
+        for(int i:Algorithm.result){
+            System.out.print(i+" ");
+        }
         System.exit(0);
     }
 }

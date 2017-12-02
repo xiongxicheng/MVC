@@ -5,6 +5,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -20,15 +21,16 @@ public class RunExperiments {
 //        String algorithm = args[1];
 //        String cutoff = args[2]; // in seconds
 //        String seed = args[3];
-//        String output_file = input_file + "_" + algorithm + "_" + cutoff + "_" + seed +".sol";
-//
+//        String output_file_sol = input_file + "_" + algorithm + "_" + cutoff + "_" + seed +".sol";
+//        String output_file_trace = input_file + "_" + algorithm + "_" + cutoff + "_" + seed + ".trace";
 //        Graph G = parse(input_file);
-        Graph G = parse("jazz.graph");
+        Graph G = parse("football.graph");
         String cutoff = "600";
-
+        PrintWriter output = new PrintWriter("football_BnB_600.trace","UTF-8");
         //Algorithm.run(G,algorithm,cutoff,output_file);
         Algorithm algorithm = new Algorithm(600);
-        algorithm.run(G,"BnB","testout.txt");
+        algorithm.run(G,"BnB",output);
+        output.close();
         System.exit(0);
     }
 
@@ -50,6 +52,7 @@ public class RunExperiments {
             }
             j++;
         }
+        br.close();
         return G;
     }
 }
