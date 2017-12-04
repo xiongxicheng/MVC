@@ -15,9 +15,9 @@ public class Approx {
 		String line = br.readLine();
 		String[] split = line.split(" ");
 		num_vertices = Integer.parseInt(split[0]);
-		System.out.println("num_vertices: "+num_vertices);
+		//System.out.println("num_vertices: "+num_vertices);
 		num_edges = Integer.parseInt(split[1]);
-		System.out.println("num_edges: "+num_edges);	
+		//System.out.println("num_edges: "+num_edges);
 		ArrayList<ArrayList<Integer>> adjList = new ArrayList<ArrayList<Integer>>(num_vertices);
 		for(int i=0;i<num_vertices;i++) {
 			adjList.add(i, new ArrayList<Integer>());

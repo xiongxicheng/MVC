@@ -26,7 +26,7 @@ public class RunExperiments {
 //        Graph G = parse(input_file);
         String input_file = "karate.graph";
         String cutoff = "600";
-        String algorithm = "BnB";
+        String algorithm = "Approx";
         if(algorithm.equals("BnB")){
             PrintWriter output_trace = new PrintWriter("netscience_BnB_600.trace","UTF-8");
             PrintWriter output_sol = new PrintWriter("netscience_BnB_600.sol","UTF-8");
@@ -37,7 +37,7 @@ public class RunExperiments {
             output_sol.close();
             System.exit(0);
         }else if(algorithm.equals("Approx")){
-            Approx.GreedyAlgo(input_file.split(".")[0]);
+            Approx.GreedyAlgo(input_file.split("\\.")[0]);
         }else if(algorithm.equals("LS1")){
 
         }else if(algorithm.equals("LS2")){
