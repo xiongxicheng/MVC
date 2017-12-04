@@ -8,10 +8,12 @@ public class finishTask extends TimerTask {
     public void run(){
         System.out.println("Time's up");
         Algorithm.output.close();
-        System.out.println(Algorithm.result.size());
-        for(int i:Algorithm.result){
-            System.out.print(i+" ");
+        Algorithm.output_sol.println(Algorithm.result.size());
+        Algorithm.output_sol.print(Algorithm.result.get(0));
+        for(int i=1;i<Algorithm.result.size();i++){
+            Algorithm.output_sol.print(","+Algorithm.result.get(i));
         }
+        Algorithm.output_sol.close();
         System.exit(0);
     }
 }

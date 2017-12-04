@@ -1,9 +1,6 @@
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Timer;
+import java.util.*;
 
 /**
  * Created by xiongxicheng on 11/10/2017.
@@ -11,34 +8,24 @@ import java.util.Timer;
 public class Algorithm {
     Timer timer;
     static PrintWriter output;
+    static PrintWriter output_sol;
     int opt;
     long startTime;
     static ArrayList<Integer> result = new ArrayList<>();
-    public void run(Graph G, String algorithm, PrintWriter output) throws IOException{
+    public void run(Graph G, PrintWriter output, PrintWriter output_sol) throws IOException{
 
         opt = G.V.length;
         this.output = output;
-        if(algorithm.equals("BnB")){
-            //branch and bound
-            startTime = System.nanoTime();
-            ArrayList<Integer> res = new ArrayList<>();
-            bnb(res, G,0, G.num_edges);
-            System.out.println(result.size());
-            for(int i:result){
-                System.out.print(i+" ");
+        this.output_sol = output_sol;
+        //branch and bound
+        startTime = System.nanoTime();
+        ArrayList<Integer> res = new ArrayList<>();
+        bnb(res, G,0, G.num_edges);
+        //System.out.println(result.size());
+        output_sol.print(result.get(0));
+            for(int i=1;i<result.size();i++) {
+                output_sol.print("," + result.get(i));
             }
-        }else if (algorithm.equals("Approx")){
-            //call approximation algorithm
-
-
-        }else if(algorithm.equals("LS1")){
-            //call local search 1
-
-        }else if(algorithm.equals("LS2")){
-            //call local search 2
-
-        }
-
     }
     public void bnb(ArrayList<Integer> res, Graph G, int index, int uncovered){
 
@@ -49,12 +36,12 @@ public class Algorithm {
         if(uncovered==0&&opt>res.size()){
             opt = res.size();
             long currentTime = System.nanoTime();
-            System.out.println((double) (currentTime-startTime)/1000000000+","+opt);
-            //output.println((double) (currentTime-startTime)/1000000000+","+opt);
+            //System.out.println((double) (currentTime-startTime)/1000000000+","+opt);
+            output.println((double) (currentTime-startTime)/1000000000+","+opt);
             result = new ArrayList<>(res);
             return;
         }
-        //calculate max can be coverred by remaining vertices
+        //approximate can be coverred by remaining vertices
         int max = 0;
         for(int i=index;i<G.V.length;i++){
             for(Integer v:G.V[i].adjacencyList){

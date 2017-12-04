@@ -9,7 +9,7 @@ public class Approx {
 	public static int num_vertices = 0;
 	public static int num_edges = 0;
 
-	private static ArrayList<ArrayList<Integer>> ReadGraph(String inputFile){
+	private static ArrayList<ArrayList<Integer>> ReadGraph(String inputFile) throws IOException{
 		String file = inputFile;
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line = br.readLine();
@@ -36,10 +36,12 @@ public class Approx {
             	}
             }
         }
+		br.close();
         return adjList;
 	}
-	private static void GreedyAlgo(String inputFile) {
+	public static void GreedyAlgo(String input) throws IOException{
 		// TODO Auto-generated method stub
+		String inputFile = input+".graph";
 		ArrayList<ArrayList<Integer>> adjList = ReadGraph(inputFile);
 		long start = System.currentTimeMillis();
 		int coversize = 0;
@@ -75,7 +77,6 @@ public class Approx {
         PrintWriter output;
         output = new PrintWriter(inputFile+".sol", "UTF-8");
         output.println(coversize+"\n"+sb);
-        br.close();
         output.close();
 	}
 

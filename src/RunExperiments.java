@@ -24,14 +24,28 @@ public class RunExperiments {
 //        String output_file_sol = input_file + "_" + algorithm + "_" + cutoff + "_" + seed +".sol";
 //        String output_file_trace = input_file + "_" + algorithm + "_" + cutoff + "_" + seed + ".trace";
 //        Graph G = parse(input_file);
-        Graph G = parse("football.graph");
+        String input_file = "karate.graph";
         String cutoff = "600";
-        PrintWriter output = new PrintWriter("football_BnB_600.trace","UTF-8");
-        //Algorithm.run(G,algorithm,cutoff,output_file);
-        Algorithm algorithm = new Algorithm(600);
-        algorithm.run(G,"BnB",output);
-        output.close();
-        System.exit(0);
+        String algorithm = "BnB";
+        if(algorithm.equals("BnB")){
+            PrintWriter output_trace = new PrintWriter("netscience_BnB_600.trace","UTF-8");
+            PrintWriter output_sol = new PrintWriter("netscience_BnB_600.sol","UTF-8");
+            Graph G = parse(input_file);
+            Algorithm algo= new Algorithm(600);
+            algo.run(G,output_trace,output_sol);
+            output_trace.close();
+            output_sol.close();
+            System.exit(0);
+        }else if(algorithm.equals("Approx")){
+            Approx.GreedyAlgo(input_file.split(".")[0]);
+        }else if(algorithm.equals("LS1")){
+
+        }else if(algorithm.equals("LS2")){
+
+        }else {
+            System.out.println("invalid algorithm name");
+            System.exit(1);
+        }
     }
 
     public static Graph parse(String file) throws IOException{
