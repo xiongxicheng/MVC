@@ -10,7 +10,7 @@ public class HillClimbing {
         System.out.println("Hi");
         String baseFile = "C:\\Users\\Rohan\\Documents\\MVC";
         String dataPath = "\\Data\\";
-        String fileName = "netscience.graph";
+        String fileName = "delaunay_n10.graph";
         String file = baseFile + dataPath + fileName;
         LocalSearch1(file, 300, 0);
         LocalSearch1(file, 300, 11);

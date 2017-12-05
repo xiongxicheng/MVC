@@ -42,7 +42,7 @@ public class RunExperiments {
         }else if(algorithm.equals("Approx")){
             Approx.GreedyAlgo(input_file.split("\\.")[0]);
         }else if(algorithm.equals("LS1")){
-
+            HillClimbing.LocalSearch1(input_file,cutoff,randseed);
         }else if(algorithm.equals("LS2")){
             LS2.simulated(input_file.split("\\.")[0],cutoff,randseed);
         }else {
