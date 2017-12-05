@@ -6,7 +6,7 @@ import java.util.TimerTask;
  */
 public class finishTask extends TimerTask {
     public void run(){
-        System.out.println("Time's up");
+        //System.out.println("Time's up");
         Algorithm.output.close();
         Algorithm.output_sol.println(Algorithm.result.size());
         Algorithm.output_sol.print(Algorithm.result.get(0));

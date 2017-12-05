@@ -7,5 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="clp-java-1.16.10-full (2)" level="project" />
+    <orderEntry type="library" name="joptimizer-4.0.0" level="project" />
   </component>
 </module>
