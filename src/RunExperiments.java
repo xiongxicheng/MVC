@@ -25,8 +25,11 @@ public class RunExperiments {
 //        String output_file_trace = input_file + "_" + algorithm + "_" + cutoff + "_" + seed + ".trace";
 //        Graph G = parse(input_file);
         String input_file = "karate.graph";
-        String cutoff = "600";
-        String algorithm = "Approx";
+        String cut = "600";
+        int cutoff = Integer.valueOf(cut);
+        //int randseed = Integer.valueOf(seed);
+        int randseed = 1;
+        String algorithm = "LS2";
         if(algorithm.equals("BnB")){
             PrintWriter output_trace = new PrintWriter("netscience_BnB_600.trace","UTF-8");
             PrintWriter output_sol = new PrintWriter("netscience_BnB_600.sol","UTF-8");
@@ -41,7 +44,7 @@ public class RunExperiments {
         }else if(algorithm.equals("LS1")){
 
         }else if(algorithm.equals("LS2")){
-
+            LS2.simulated(input_file.split("\\.")[0],cutoff,randseed);
         }else {
             System.out.println("invalid algorithm name");
             System.exit(1);
