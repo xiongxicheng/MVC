@@ -41,9 +41,9 @@ public class HillClimbing {
         }
         String[] split = firstLine.split(" ");
         num_vertices = Integer.parseInt(split[0]);
-        System.out.println("num_vertices: "+ num_vertices);
+        //System.out.println("num_vertices: "+ num_vertices);
         num_edges = Integer.parseInt(split[1]);
-        System.out.println("num_edges: "+ num_edges);
+        //System.out.println("num_edges: "+ num_edges);
         ArrayList<ArrayList<Integer>> adjList = new ArrayList<ArrayList<Integer>>(num_vertices + 1);
         Set<Integer> vertices = new HashSet<Integer>(num_vertices);
         for(int i=0; i<=num_vertices; i++) {
@@ -77,8 +77,8 @@ public class HillClimbing {
             System.err.println("Error closing input file");
             System.exit(1);
         }
-        System.out.println(adjList);
-        System.out.println(vertices);
+        //System.out.println(adjList);
+        //System.out.println(vertices);
         long startTime = System.currentTimeMillis();
         //Solve here
         String[] fileNameSplit = fileName.split("\\.");
@@ -87,8 +87,8 @@ public class HillClimbing {
         long endTime = System.currentTimeMillis();
         long runTime = (endTime - startTime);
         Collections.sort(result);
-        System.out.println("coversize: "+ coverSize + " " + " vertices: " + result);
-        System.out.println("time: "+ runTime);
+        //System.out.println("coversize: "+ coverSize + " " + " vertices: " + result);
+        //System.out.println("time: "+ runTime);
         StringBuilder stringAns = new StringBuilder();
         for(int v=0; v<result.size(); v++) {
             stringAns.append(result.get(v));
@@ -96,7 +96,7 @@ public class HillClimbing {
         }
         PrintWriter output;
         String outFile = fileNameSplit[0] + "_LS1_" + cutoffTime + "_" + seed + ".sol";
-        System.out.println(outFile);
+        //System.out.println(outFile);
         output = null;
         try {
             output = new PrintWriter(outFile, "UTF-8");
@@ -111,8 +111,8 @@ public class HillClimbing {
     public static int LocalSearchHillClimbing(ArrayList<ArrayList<Integer>> adjList, Set<Integer> vertexList,
                                               int num_vertices, int num_edges, long startTime, int cutoff_time,
                                               int seed, String traceFile) {
-        System.out.println("I am entering local search hill climbing");
-        System.out.println(adjList.get(2));
+        //System.out.println("I am entering local search hill climbing");
+        //System.out.println(adjList.get(2));
         long limitTime = 1000 * cutoff_time; //Convert time limit to milliseconds
         boolean betterSolution = false;
         HashSet<Integer> ansList = new HashSet<Integer>();
@@ -172,7 +172,7 @@ public class HillClimbing {
                     currInd++;
                 }
                 betterSolution = false;
-                System.out.println("We got a solution: " + ansList);
+                //System.out.println("We got a solution: " + ansList);
                 verticesCovered.clear();
                 if (ansList.size() < minSize) {
                     result = new ArrayList<Integer>(ansList);

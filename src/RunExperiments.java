@@ -29,7 +29,7 @@ public class RunExperiments {
         int cutoff = Integer.valueOf(cut);
         //int randseed = Integer.valueOf(seed);
         int randseed = 1;
-        String algorithm = "LS2";
+        String algorithm = "LS1";
         if(algorithm.equals("BnB")){
             PrintWriter output_trace = new PrintWriter("netscience_BnB_600.trace","UTF-8");
             PrintWriter output_sol = new PrintWriter("netscience_BnB_600.sol","UTF-8");
