@@ -1,21 +1,44 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 
 public class HillClimbing {
     public static ArrayList<Integer> result = new ArrayList<>();
     public static int num_vertices = 0;
     public static int num_edges = 0;
+
     public static void main(String[] args)throws IOException{
         System.out.println("Hi");
         String baseFile = "C:\\Users\\Rohan\\Documents\\MVC";
         String dataPath = "\\Data\\";
-        String fileName = "karate.graph";
+        String fileName = "netscience.graph";
         String file = baseFile + dataPath + fileName;
-        BufferedReader inputFile = new BufferedReader(new FileReader(file));
-        String firstLine = inputFile.readLine();
+        LocalSearch1(file, 300, 0);
+        LocalSearch1(file, 300, 11);
+        LocalSearch1(file, 300, 13);
+        LocalSearch1(file, 300, 17);
+        LocalSearch1(file, 300, 23);
+        LocalSearch1(file, 300, 27);
+        LocalSearch1(file, 300, 31);
+        LocalSearch1(file, 300, 37);
+        LocalSearch1(file, 300, 41);
+        LocalSearch1(file, 300, 47);
+    }
+
+    public static void LocalSearch1(String fileName, int cutoffTime, int seed) {
+        BufferedReader inputFile = null;
+        try {
+            inputFile = new BufferedReader(new FileReader(fileName));
+        } catch(FileNotFoundException e) {
+            System.err.println("Input file not found in current directory");
+            System.exit(1);
+        }
+        String firstLine = "";
+        try {
+            firstLine = inputFile.readLine();
+        } catch(IOException e) {
+            System.err.println("Error reading the first line of the specified file");
+            System.exit(1);
+        }
         String[] split = firstLine.split(" ");
         num_vertices = Integer.parseInt(split[0]);
         System.out.println("num_vertices: "+ num_vertices);
@@ -32,10 +55,15 @@ public class HillClimbing {
 
         String str = null;
         for(int src=1;src<=num_vertices;src++) {
-            str=inputFile.readLine();
+            try {
+                str = inputFile.readLine();
+            } catch(IOException e) {
+                System.err.println("Can't read next line");
+                System.exit(1);
+            }
             if(str.equals("")) {
                 adjList.get(src).clear();
-            }else {
+            } else {
                 String[] neighbourList = str.split(" ");
                 for(int j=0;j<neighbourList.length;j++) {
                     int dest = Integer.parseInt(neighbourList[j]);
@@ -43,12 +71,19 @@ public class HillClimbing {
                 }
             }
         }
-        inputFile.close();
+        try {
+            inputFile.close();
+        } catch (IOException e) {
+            System.err.println("Error closing input file");
+            System.exit(1);
+        }
         System.out.println(adjList);
         System.out.println(vertices);
         long startTime = System.currentTimeMillis();
         //Solve here
-        int coverSize = LocalSearchHillClimbing(adjList, vertices, num_vertices, num_edges, startTime);
+        String[] fileNameSplit = fileName.split("\\.");
+        String traceFile = fileNameSplit[0] + "_LS1_" + cutoffTime + "_" + seed + ".trace";
+        int coverSize = LocalSearchHillClimbing(adjList, vertices, num_vertices, num_edges, startTime, cutoffTime, seed, traceFile);
         long endTime = System.currentTimeMillis();
         long runTime = (endTime - startTime);
         Collections.sort(result);
@@ -60,26 +95,38 @@ public class HillClimbing {
             if (v != result.size() - 1) stringAns.append(",");
         }
         PrintWriter output;
-        String[] fileNameSplit = fileName.split("\\.");
-        String outFile = baseFile + "\\" + fileNameSplit[0] + "_" + ((endTime - startTime) / 1000) + "_" + 0 + ".trace";
+        String outFile = fileNameSplit[0] + "_LS1_" + cutoffTime + "_" + seed + ".sol";
         System.out.println(outFile);
-        output = new PrintWriter(outFile, "UTF-8");
+        output = null;
+        try {
+            output = new PrintWriter(outFile, "UTF-8");
+        } catch (IOException e) {
+            System.err.println("Error opening output solution file");
+            System.exit(1);
+        }
         output.println(coverSize + "\n" + stringAns);
         output.close();
     }
 
-    public static int LocalSearchHillClimbing(ArrayList<ArrayList<Integer>> adjList, Set<Integer> vertexList, int num_vertices, int num_edges, long startTime) {
-        for (int i = 0; i < 10; i ++)
+    public static int LocalSearchHillClimbing(ArrayList<ArrayList<Integer>> adjList, Set<Integer> vertexList,
+                                              int num_vertices, int num_edges, long startTime, int cutoff_time,
+                                              int seed, String traceFile) {
         System.out.println("I am entering local search hill climbing");
         System.out.println(adjList.get(2));
-        long limitTime = 1000 * 10 * 1; //Time limit = 2 min now
+        long limitTime = 1000 * cutoff_time; //Convert time limit to milliseconds
         boolean betterSolution = false;
         HashSet<Integer> ansList = new HashSet<Integer>();
         HashSet<Integer> verticesCovered = new HashSet<Integer>();
-        long seed = 0;
         Random rand = new Random(seed);
-        long currTime = System.currentTimeMillis();
+        PrintWriter trace = null;
+        try {
+            trace = new PrintWriter(traceFile, "UTF-8");
+        } catch (IOException e) {
+            System.err.println("Error opening trace solution file");
+            System.exit(1);
+        }
         int minSize = num_vertices + 1;
+        long currTime = System.currentTimeMillis();
         while (currTime - startTime < limitTime) {
             if (!betterSolution) {
                 // Make an initial solution first
@@ -130,11 +177,15 @@ public class HillClimbing {
                 if (ansList.size() < minSize) {
                     result = new ArrayList<Integer>(ansList);
                     minSize = ansList.size();
+                    long timeNow = System.currentTimeMillis();
+                    double timeDiff = (timeNow - startTime) / 1000.0;
+                    trace.println(timeDiff + "," + minSize);
                 }
                 ansList.clear();
             }
             currTime = System.currentTimeMillis();
         }
+        trace.close();
         return minSize;
     }
 }
