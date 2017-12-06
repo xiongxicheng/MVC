@@ -27,8 +27,8 @@ public class RunExperiments {
         // int randseed = 1;
         // String algorithm = "LS1";
         if(algorithm.equals("BnB")){
-        	String output_file_sol = input_file.split("\\.")[0] + "_" + algorithm + "_" + cutoff + "_" + seed +".sol";
-       		String output_file_trace = input_file.split("\\.")[0] + "_" + algorithm + "_" + cutoff + "_" + seed + ".trace";
+        	String output_file_sol = input_file.split("\\.")[0] + "_" + algorithm + "_" + cutoff + ".sol";
+       		String output_file_trace = input_file.split("\\.")[0] + "_" + algorithm + "_" + cutoff + ".trace";
             PrintWriter output_trace = new PrintWriter(output_file_trace,"UTF-8");
             PrintWriter output_sol = new PrintWriter(output_file_sol,"UTF-8");
             Graph G = parse(input_file);
@@ -38,7 +38,7 @@ public class RunExperiments {
             output_sol.close();
             System.exit(0);
         }else if(algorithm.equals("Approx")){
-            Approx.GreedyAlgo(input_file.split("\\.")[0]);
+            Approx.GreedyAlgo(input_file.split("\\.")[0], cutoff);
         }else if(algorithm.equals("LS1")){
             HillClimbing.LocalSearch1(input_file,cutoff,randseed);
         }else if(algorithm.equals("LS2")){

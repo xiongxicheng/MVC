@@ -39,8 +39,7 @@ public class Approx {
 		br.close();
         return adjList;
 	}
-	public static void GreedyAlgo(String inputFile) throws IOException{
-		// TODO Auto-generated method stub
+	public static void GreedyAlgo(String inputFile, int cutoff) throws IOException{
 		ArrayList<ArrayList<Integer>> adjList = ReadGraph(inputFile);
 		long start = System.currentTimeMillis();
 		int coversize = 0;
@@ -74,7 +73,7 @@ public class Approx {
         	sb.append(result.get(v)+" ");
         }
         PrintWriter output;
-        output = new PrintWriter(inputFile+"_Approx"+".sol", "UTF-8");
+        output = new PrintWriter(inputFile+"_Approx" + "_" + cutoff +".sol", "UTF-8");
         output.println(coversize+"\n"+sb);
         output.close();
 	}

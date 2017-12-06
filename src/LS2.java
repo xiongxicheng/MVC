@@ -75,7 +75,7 @@ public class LS2 {
 		long startTime = System.currentTimeMillis();
 		long currTime = System.currentTimeMillis();
 		
-		while(temp>absTemp && currTime - startTime < cutoff) {
+		while(temp>absTemp && currTime - startTime < cutoff * 1000) {
 			if(!betterSolution) {
 				//Make an initial solution
 				//For every edge choose one of the vertices randomly and add it to the cover
