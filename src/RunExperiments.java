@@ -44,7 +44,7 @@ public class RunExperiments {
         }else if(algorithm.equals("LS2")){
             LS2.simulated(input_file.split("\\.")[0],cutoff,randseed);
         }else {
-            System.out.println("invalid algorithm name");
+            System.err.println("invalid algorithm name");
             System.exit(1);
         }
     }
