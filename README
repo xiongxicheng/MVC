@@ -1,6 +1,6 @@
 Our code has already been compiled and tested in Ubuntu (64-bit).
 - How to Run? 
-Change to the source file directory, in the command line, input the following:
+Change to the source file directory, in the command line, input the following:(order as mentioned in the instruction)
 java RunExperiments <filename> <algorithm> <cutoff time in seconds> <random seed>
 e.g., java RunExperiments karate.graph LS1 600 11
 The input graph file should be in the same directory as the source code, and the output file wil be generated in the same directory as well.
