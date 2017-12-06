@@ -4,7 +4,7 @@ Minimum Vertex Cover
 Our code has already been compiled and tested in Ubuntu (64-bit).
 
 # How to Run?
-Change to the source file directory, in the command line, input the following:
+Change to the source file directory (src), in the command line, from .../src input the following:
 
 javac RunExperiments,java (if you still need to compile)
 
@@ -12,7 +12,7 @@ java RunExperiments -inst <filename> -alg <algorithm> -time <cutoff time in seco
   
 e.g., java RunExperiments -inst karate.graph -alg LS1 -time 600 -seed 11
 
-The input graph file should be in the same directory as the source code, and the output file wil be generated in the same directory as well.
+The input graph file should be in the same directory as the project, preferrably the same directory as the soure code  (src), and the output file wil be generated in the same directory as well.
 
 # Structure
 \<RunExperiments\> - for running the program.
