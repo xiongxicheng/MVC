@@ -17,12 +17,11 @@ public class RunExperiments {
            System.err.println("Unexpected number of command line arguments");
            System.exit(1);
        }
-       String input_file = args[0];
-       String algorithm = args[1];
-       String cut = args[2]; // in seconds
-       String seed = args[3];
-       int randseed = Integer.valueOf(seed);
-       int cutoff = Integer.valueOf(cut);
+       CliArgs cliArgs = new CliArgs(args);
+       String input_file = cliArgs.switchValue("-inst");
+       String algorithm = cliArgs.switchValue("-alg");
+       int randseed = cliArgs.switchLongValue("-seed").intValue();
+       int cutoff = cliArgs.switchLongValue("-time").intValue();
         // String input_file = "karate.graph";
         // String cut = "6";
         // int randseed = 1;

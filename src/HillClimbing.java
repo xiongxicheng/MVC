@@ -71,7 +71,7 @@ public class HillClimbing {
                 }
             }
         }
-        
+
         try {
             inputFile.close();
         } catch (IOException e) {
