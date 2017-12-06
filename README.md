@@ -15,21 +15,21 @@ e.g., java RunExperiments -inst karate.graph -alg LS1 -time 600 -seed 11
 The input graph file should be in the same directory as the source code, and the output file wil be generated in the same directory as well.
 
 # Structure
-<RunExperiments> - for running the program.
+\<RunExperiments\> - for running the program.
   
-<Algorithm> - for branch and bound algorithm
+\<Algorithm\> - for branch and bound algorithm
   
-<Approx> - for approximation algorithm
+\<Approx\> - for approximation algorithm
   
-<finishTask> - for terminating branch and bound
+\<finishTask\> - for terminating branch and bound
   
-<Graph> - graph data structure used in branch and bound
+\<Graph\> - graph data structure used in branch and bound
   
-<HillClimbing> - local search algorithm with randomized restart hill climbing
+\<HillClimbing\> - local search algorithm with randomized restart hill climbing
   
-<LS2> - local search algorithm with simulated annealing
+\<LS2\> - local search algorithm with simulated annealing
 
-<Vertex> - vertex data structure used in branch and bound
+\<Vertex\> - vertex data structure used in branch and bound
 
 # Sources:
 Other than the sources mentioned in the paper, command line parsing class is from https://github.com/jjenkov/cli-args
